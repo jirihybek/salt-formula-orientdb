@@ -52,7 +52,7 @@
                 <parameter name="delay" value="{{server.automatic_backup.delay}}"/>
                 <parameter name="firstTime" value="{{server.automatic_backup.first_time}}"/>
                 <parameter name="target.directory" value="{{server.automatic_backup.directory}}"/>
-                <parameter name="target.fileName" value="{{server.automatic_backup.filename}}"/>
+                <parameter name="target.fileName" value="${DBNAME}-${DATE:yyyyMMddHHmmss}.zip"/>
                 <parameter name="compressionLevel" value="{{server.automatic_backup.compression_level}}"/>
                 <parameter name="bufferSize" value="1048576"/>
                 <!--${DBNAME} AND ${DATE:} VARIABLES ARE SUPPORTED -->

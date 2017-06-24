@@ -11,7 +11,6 @@ orientdb:
       delay: 4h
       first_time: 04:00:00
       directory: backup
-      filename: '${DBNAME}-${DATE:yyyyMMddHHmmss}.zip'
       compression_level: 9
       db_include: ''
       db_exclude: ''
