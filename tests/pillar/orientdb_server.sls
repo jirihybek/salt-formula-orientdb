@@ -65,4 +65,7 @@ orientdb:
       file:
         enabled: true
         level: fine
-    users: []
+    users:
+      - name: root
+        password: toor
+        resources: '*'
