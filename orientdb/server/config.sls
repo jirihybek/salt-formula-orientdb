@@ -11,12 +11,9 @@ orientdb_server_config:
   - template: jinja
 
 orientdb_server_start_script:
-  file.managed:
+  file.replace:
   - name: {{environment.install_dir}}/bin/server.sh
-  - source: salt://orientdb/files/server.sh
-  - user: {{environment.user}}
-  - group: {{environment.group}}
-  - mode: 755
-  - template: jinja
+  - pattern: 'MAXHEAP=[0-9a-zA-Z-]*'
+  - repl: 'MAXHEAP=-Xmx{{environment.java_max_heap}}'
 
 {%- endif %}
