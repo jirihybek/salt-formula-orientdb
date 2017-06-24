@@ -8,7 +8,6 @@ After=syslog.target
 WantedBy=multi-user.target
 
 [Service]
-Type=forking
 ExecStart={{ environment.install_dir }}/bin/server.sh
 User={{ environment.user }}
 Group={{ environment.group }}
