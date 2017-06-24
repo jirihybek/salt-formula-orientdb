@@ -96,7 +96,8 @@ License
 
 Formula derived from https://github.com/salt-formulas/salt-formula-java
 
-Apache 2
+Apache 2 license
 
-Copyright (C) 2017 Jiri Hybek <jiri@hybek.cz>  
+Copyright (C) 2017 Jiri Hybek <jiri@hybek.cz>
+
 Copyright (C) 2014-2015 tcp cloud (original salt-formula-java)
