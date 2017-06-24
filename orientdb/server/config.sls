@@ -25,7 +25,7 @@ orientdb_server_script_orientdb.sh_dir:
 orientdb_server_script_orientdb.sh_user:
   file.replace:
   - name: {{environment.install_dir}}/bin/orientdb.sh
-  - pattern: 'ORIENTDB_DIR=[^\n]*'
+  - pattern: 'ORIENTDB_USER=[^\n]*'
   - repl: 'ORIENTDB_USER="{{environment.user}}"'
 
 {%- endif %}
