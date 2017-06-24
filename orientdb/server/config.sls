@@ -28,4 +28,11 @@ orientdb_server_script_orientdb.sh_user:
   - pattern: 'ORIENTDB_USER=[^\n]*'
   - repl: 'ORIENTDB_USER="{{environment.user}}"'
 
+orientdb_server_script_orientdb.sh_env:
+  file.line:
+  - name: {{environment.install_dir}}/bin/orientdb.sh
+  - content: ". /etc/profile"
+  - mode: ensure
+  - after: 'ORIENTDB_USER='
+
 {%- endif %}
