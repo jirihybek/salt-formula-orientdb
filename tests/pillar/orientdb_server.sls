@@ -6,7 +6,6 @@ orientdb:
     java_max_heap: 2g
   server:
     enabled: true
-    install_dir: /srv/orientdb
     automatic_backup:
       enabled: false
       delay: 4h
