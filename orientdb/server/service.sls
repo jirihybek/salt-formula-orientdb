@@ -9,6 +9,6 @@ orientdb_service_enable:
 orientdb_service_manage:
   service.running:
     - name: orientdb
-    - enabled: True
+    - enable: True
 
 {%- endif %}
