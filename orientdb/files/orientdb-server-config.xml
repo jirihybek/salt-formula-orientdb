@@ -107,7 +107,7 @@
             </socket>
             <socket implementation="com.orientechnologies.orient.server.network.OServerSSLSocketFactory" name="https">
                 <parameters>
-                    <parameter value="{{server.https.client_auth}" name="network.ssl.clientAuth"/>
+                    <parameter value="{{server.https.client_auth}}" name="network.ssl.clientAuth"/>
                     <parameter value="{{server.https.key_store}}" name="network.ssl.keyStore"/>
                     <parameter value="{{server.https.key_store_password}}" name="network.ssl.keyStorePassword"/>
                     <parameter value="{{server.https.trust_store}}" name="network.ssl.trustStore"/>
