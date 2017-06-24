@@ -1,4 +1,4 @@
-{%- from "orientdb/map.jinja" import server with context %}
+{%- from "orientdb/map.jinja" import server with context -%}
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--
    ~ /*
@@ -48,7 +48,7 @@
         <!-- AUTOMATIC BACKUP, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
         <handler class="com.orientechnologies.orient.server.handler.OAutomaticBackup">
             <parameters>
-                <parameter name="enabled" value="{{server.automatic_backup.enabled}}"/>
+                <parameter name="enabled" value="{{server.automatic_backup.enabled|lower}}"/>
                 <parameter name="delay" value="{{server.automatic_backup.delay}}"/>
                 <parameter name="firstTime" value="{{server.automatic_backup.first_time}}"/>
                 <parameter name="target.directory" value="{{server.automatic_backup.directory}}"/>
@@ -68,14 +68,14 @@
         <handler
                 class="com.orientechnologies.orient.server.handler.OServerSideScriptInterpreter">
             <parameters>
-                <parameter name="enabled" value="{{server.script_interpreter.enabled}}"/>
+                <parameter name="enabled" value="{{server.script_interpreter.enabled|lower}}"/>
                 <parameter name="allowedLanguages" value="{{server.script_interpreter.allowed_languages}}"/>
             </parameters>
         </handler>
         <!-- USE SESSION TOKEN, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
         <handler class="com.orientechnologies.orient.server.token.OrientTokenHandler">
             <parameters>
-                <parameter name="enabled" value="{{server.token_handler.enabled}}"/>
+                <parameter name="enabled" value="{{server.token_handler.enabled|lower}}"/>
                 <!-- PRIVATE KEY -->
                 <parameter name="oAuth2Key" value="{{server.token_handler.oauth2_key}}"/>
                 <!-- SESSION LENGTH IN MINUTES, DEFAULT=1 HOUR -->
@@ -88,7 +88,7 @@
         <handler class="com.orientechnologies.orient.server.plugin.livequery.OLiveQueryPlugin">
             <!-- EXPERIMENTAL FEATURE, enable at your own risk -->
             <parameters>
-                <parameter name="enabled" value="{{server.live_query.enabled}}"/>
+                <parameter name="enabled" value="{{server.live_query.enabled|lower}}"/>
             </parameters>
         </handler>
 
@@ -167,9 +167,9 @@
     <storages>
     </storages>
     <users>
-    	{%- for user in server.users %}
-		<user resources="{{user.resources}}" password="{{user.password}}" name="{{user.name}}"/>
-    	{%- endfor %}
+        {%- for user in server.users %}
+        <user resources="{{user.resources}}" password="{{user.password}}" name="{{user.name}}"/>
+        {%- endfor %}
     </users>
     <properties>
         <!-- DATABASE POOL: size min/max -->
@@ -177,7 +177,7 @@
         <entry name="db.pool.max" value="{{server.db.pool.max}}"/>
 
         <!-- PROFILER: configures the profiler as <seconds-for-snapshot>,<archive-snapshot-size>,<summary-size> -->
-        <entry name="profiler.enabled" value="{{server.profiler.enabled}}"/>
+        <entry name="profiler.enabled" value="{{server.profiler.enabled|lower}}"/>
         <!-- <entry name="profiler.config" value="30,10,10" /> -->
 
         <!-- LOG: enable/Disable logging. Levels are: finer, fine, finest, info,

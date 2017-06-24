@@ -10,5 +10,7 @@ orientdb_service_manage:
   service.running:
     - name: orientdb
     - enable: True
+    - watch:
+      - file: {{environment.install_dir}}/config/orientdb-server-config.xml
 
 {%- endif %}
