@@ -21,6 +21,6 @@ orientdb_server_script_server.sh_env:
   - name: {{environment.install_dir}}/bin/server.sh
   - content: ". /etc/profile"
   - mode: ensure
-  - before: 'echo'
+  - after: '#!/bin/sh'
 
 {%- endif %}
