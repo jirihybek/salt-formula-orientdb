@@ -22,6 +22,9 @@ orientdb_unpack_source:
   - group: {{environment.group}}
   - mode: 755
   - makedirs: False
+  - recurse:
+    - user
+    - group
   - require:
     - cmd: orientdb_unpack_source
 
