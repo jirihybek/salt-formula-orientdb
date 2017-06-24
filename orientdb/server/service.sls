@@ -1,4 +1,4 @@
-{%- from "orientdb/map.jinja" import server with context %}
+{%- from "orientdb/map.jinja" import environment,server with context %}
 {%- if server.enabled %}
 
 orientdb_service_enable:
