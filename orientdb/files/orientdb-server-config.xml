@@ -77,11 +77,11 @@
             <parameters>
                 <parameter name="enabled" value="{{server.token_handler.enabled}}"/>
                 <!-- PRIVATE KEY -->
-                <parameter name="oAuth2Key" value="{{server.script_interpreter.oauth2_key}}"/>
+                <parameter name="oAuth2Key" value="{{server.token_handler.oauth2_key}}"/>
                 <!-- SESSION LENGTH IN MINUTES, DEFAULT=1 HOUR -->
-                <parameter name="sessionLength" value="{{server.script_interpreter.session_length}}"/>
+                <parameter name="sessionLength" value="{{server.token_handler.session_length}}"/>
                 <!-- ENCRYPTION ALGORITHM, DEFAULT=HmacSHA256 -->
-                <parameter name="encryptionAlgorithm" value="{{server.script_interpreter.algorithm}}"/>
+                <parameter name="encryptionAlgorithm" value="{{server.token_handler.algorithm}}"/>
             </parameters>
         </handler>
 
