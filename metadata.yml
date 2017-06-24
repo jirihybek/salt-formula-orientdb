@@ -1,0 +1,4 @@
+name: "orientdb"
+version: "0.1"
+source: "https://github.com/jirihybek/salt-formula-orientdb"
+

@@ -1,0 +1,14 @@
+Source: salt-formula-orientdb
+Maintainer: Jiri Hybek <jiri@hybek.cz>
+Section: admin
+Priority: optional
+Build-Depends: salt-master, python, python-yaml, debhelper (>= 9)
+Standards-Version: 3.9.6
+Vcs-Browser: https://github.com/jirihybek/salt-formula-orientdb
+Vcs-Git: https://github.com/jirihybek/salt-formula-orientdb.git
+
+Package: salt-formula-orientdb
+Architecture: all
+Depends: ${misc:Depends}, salt-master, reclass
+Description: OrientDB formula
+ Install and configure OrientDB.

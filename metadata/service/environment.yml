@@ -1,0 +1,7 @@
+parameters:
+  orientdb:
+    environment:
+      version: 2.2-alpha
+      user: root
+      group: root
+      java_max_heap: 2g

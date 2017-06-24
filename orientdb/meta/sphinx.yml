@@ -1,0 +1,7 @@
+doc:
+  name: OrientDB
+  description: Multi-model database.
+  role:
+    server:
+      name: server
+      param: {}

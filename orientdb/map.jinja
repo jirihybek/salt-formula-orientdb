@@ -1,0 +1,20 @@
+{% set environment = salt['grains.filter_by']({
+    'Debian': {
+        'prefix': '/srv/orientdb'
+    },
+    'RedHat': {
+        'prefix': '/opt/orientdb'
+    },
+    'MacOS': {
+        'prefix': '/opt/orientdb'
+    }
+}, merge=salt['pillar.get']('orientdb:environment')) %}
+
+{%- set server = pillar.orientdb.get('server', {}) %}
+{%- set source_url = 'http://orientdb.com/download.php?email=unknown@unknown.com&file=orientdb-community-' + environment.version + '.tar.gz&os=linux' %}
+{%- set install_dir = environment.prefix + '/orientdb-community-' + environment.version %}
+
+{%- do environment.update( {
+    'source_url' : source_url,
+    'install_dir': install_dir
+}) %}

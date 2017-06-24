@@ -1,0 +1,192 @@
+{%- from "orientdb/map.jinja" import server with context %}
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+   ~ /*
+   ~  *  Copyright 2014 Orient Technologies LTD (info(at)orientechnologies.com)
+   ~  *
+   ~  *  Licensed under the Apache License, Version 2.0 (the "License");
+   ~  *  you may not use this file except in compliance with the License.
+   ~  *  You may obtain a copy of the License at
+   ~  *
+   ~  *       http://www.apache.org/licenses/LICENSE-2.0
+   ~  *
+   ~  *  Unless required by applicable law or agreed to in writing, software
+   ~  *  distributed under the License is distributed on an "AS IS" BASIS,
+   ~  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   ~  *  See the License for the specific language governing permissions and
+   ~  *  limitations under the License.
+   ~  *
+   ~  * For more information: http://www.orientechnologies.com
+   ~  */
+   -->
+
+<orient-server>
+    <handlers>
+        <handler class="com.orientechnologies.orient.graph.handler.OGraphServerHandler">
+            <parameters>
+                <parameter name="enabled" value="true"/>
+                <parameter name="graph.pool.max" value="50"/>
+            </parameters>
+        </handler>
+        <!-- CLUSTER PLUGIN, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
+        <handler class="com.orientechnologies.orient.server.hazelcast.OHazelcastPlugin">
+            <parameters>
+                <!-- <parameter name="nodeName" value="europe1" /> -->
+                <parameter name="enabled" value="${distributed}"/>
+                <parameter name="configuration.db.default"
+                           value="${ORIENTDB_HOME}/config/default-distributed-db-config.json"/>
+                <parameter name="configuration.hazelcast" value="${ORIENTDB_HOME}/config/hazelcast.xml"/>
+            </parameters>
+        </handler>
+        <!-- JMX SERVER, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
+        <handler class="com.orientechnologies.orient.server.handler.OJMXPlugin">
+            <parameters>
+                <parameter name="enabled" value="false"/>
+                <parameter name="profilerManaged" value="true"/>
+            </parameters>
+        </handler>
+        <!-- AUTOMATIC BACKUP, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
+        <handler class="com.orientechnologies.orient.server.handler.OAutomaticBackup">
+            <parameters>
+                <parameter name="enabled" value="{{server.automatic_backup.enabled}}"/>
+                <parameter name="delay" value="{{server.automatic_backup.delay}}"/>
+                <parameter name="firstTime" value="{{server.automatic_backup.first_time}}"/>
+                <parameter name="target.directory" value="{{server.automatic_backup.directory}}"/>
+                <parameter name="target.fileName" value="{{server.automatic_backup.filename}}"/>
+                <parameter name="compressionLevel" value="{{server.automatic_backup.compression_level}}"/>
+                <parameter name="bufferSize" value="1048576"/>
+                <!--${DBNAME} AND ${DATE:} VARIABLES ARE SUPPORTED -->
+                <parameter name="db.include" value="{{server.automatic_backup.db_include}}"/>
+                <!-- DEFAULT: NO ONE, THAT MEANS ALL DATABASES. USE COMMA TO SEPARATE MULTIPLE DATABASE NAMES -->
+                <parameter name="db.exclude" value="{{server.automatic_backup.db_exclude}}"/>
+                <!-- USE COMMA TO SEPARATE MULTIPLE DATABASE NAMES -->
+            </parameters>
+        </handler>
+        <!-- SERVER SIDE SCRIPT INTERPRETER. WARNING! THIS CAN BE A SECURITY HOLE:
+            ENABLE IT ONLY IF CLIENTS ARE TRUCT, TO TURN ON SET THE 'ENABLED' PARAMETER
+            TO 'true' -->
+        <handler
+                class="com.orientechnologies.orient.server.handler.OServerSideScriptInterpreter">
+            <parameters>
+                <parameter name="enabled" value="{{server.script_interpreter.enabled}}"/>
+                <parameter name="allowedLanguages" value="{{server.script_interpreter.allowed_languages}}"/>
+            </parameters>
+        </handler>
+        <!-- USE SESSION TOKEN, TO TURN ON SET THE 'ENABLED' PARAMETER TO 'true' -->
+        <handler class="com.orientechnologies.orient.server.token.OrientTokenHandler">
+            <parameters>
+                <parameter name="enabled" value="{{server.token_handler.enabled}}"/>
+                <!-- PRIVATE KEY -->
+                <parameter name="oAuth2Key" value="{{server.script_interpreter.oauth2_key}}"/>
+                <!-- SESSION LENGTH IN MINUTES, DEFAULT=1 HOUR -->
+                <parameter name="sessionLength" value="{{server.script_interpreter.session_length}}"/>
+                <!-- ENCRYPTION ALGORITHM, DEFAULT=HmacSHA256 -->
+                <parameter name="encryptionAlgorithm" value="{{server.script_interpreter.algorithm}}"/>
+            </parameters>
+        </handler>
+
+        <handler class="com.orientechnologies.orient.server.plugin.livequery.OLiveQueryPlugin">
+            <!-- EXPERIMENTAL FEATURE, enable at your own risk -->
+            <parameters>
+                <parameter name="enabled" value="{{server.live_query.enabled}}"/>
+            </parameters>
+        </handler>
+
+
+    </handlers>
+    <network>
+        <sockets>
+            <socket implementation="com.orientechnologies.orient.server.network.OServerSSLSocketFactory" name="ssl">
+                <parameters>
+                    <parameter value="{{server.ssl.client_auth}}" name="network.ssl.clientAuth"/>
+                    <parameter value="{{server.ssl.key_store}}" name="network.ssl.keyStore"/>
+                    <parameter value="{{server.ssl.key_store_password}}" name="network.ssl.keyStorePassword"/>
+                    <parameter value="{{server.ssl.trust_store}}" name="network.ssl.trustStore"/>
+                    <parameter value="{{server.ssl.trust_store_password}}" name="network.ssl.trustStorePassword"/>
+                </parameters>
+            </socket>
+            <socket implementation="com.orientechnologies.orient.server.network.OServerSSLSocketFactory" name="https">
+                <parameters>
+                    <parameter value="{{server.https.client_auth}" name="network.ssl.clientAuth"/>
+                    <parameter value="{{server.https.key_store}}" name="network.ssl.keyStore"/>
+                    <parameter value="{{server.https.key_store_password}}" name="network.ssl.keyStorePassword"/>
+                    <parameter value="{{server.https.trust_store}}" name="network.ssl.trustStore"/>
+                    <parameter value="{{server.https.trust_store_password}}" name="network.ssl.trustStorePassword"/>
+                </parameters>
+            </socket>
+        </sockets>
+        <protocols>
+            <!-- Default registered protocol. It reads commands using the HTTP protocol
+                and write data locally -->
+            <protocol name="binary"
+                      implementation="com.orientechnologies.orient.server.network.protocol.binary.ONetworkProtocolBinary"/>
+            <protocol name="http"
+                      implementation="com.orientechnologies.orient.server.network.protocol.http.ONetworkProtocolHttpDb"/>
+        </protocols>
+        <listeners>
+        	{%- if server.protocol.binary.enabled %}
+            <listener protocol="binary" ip-address="{{server.protocol.binary.ip_address}}" port-range="{{server.protocol.binary.port_range}}" socket="default"/>
+            {%- endif %}
+            {%- if server.protocol.binary_ssl.enabled %}
+            <listener protocol="binary" ip-address="{{server.protocol.binary_ssl.ip_address}}" port-range="{{server.protocol.binary_ssl.port_range}}" socket="ssl"/>
+            {%- endif %}
+            {%- if server.protocol.http.enabled %}
+            <listener protocol="http" ip-address="{{server.protocol.http.ip_address}}" port-range="{{server.protocol.http.port_range}}" socket="default">
+                <parameters>
+                    <!-- Connection's custom parameters. If not specified the global configuration
+                        will be taken -->
+                    <parameter name="network.http.charset" value="utf-8"/>
+                    <parameter value="true" name="network.http.jsonResponseError"/>
+                    <!-- Define additional HTTP headers to always send as response -->
+                    <!-- Allow cross-site scripting -->
+                    {%- if server.protocol.http.enable_xss %}
+                    <parameter name="network.http.additionalResponseHeaders" value="Access-Control-Allow-Origin:
+                        *;Access-Control-Allow-Credentials: true" />
+                    {%- endif %}
+                </parameters>
+                <commands>
+                    <command
+                            pattern="GET|www GET|studio/ GET| GET|*.htm GET|*.html GET|*.xml GET|*.jpeg GET|*.jpg GET|*.png GET|*.gif GET|*.js GET|*.css GET|*.swf GET|*.ico GET|*.txt GET|*.otf GET|*.pjs GET|*.svg GET|*.json GET|*.woff GET|*.ttf GET|*.svgz"
+                            implementation="com.orientechnologies.orient.server.network.protocol.http.command.get.OServerCommandGetStaticContent">
+                        <parameters>
+                            <!-- Don't cache html resources in development mode -->
+                            <entry name="http.cache:*.htm *.html"
+                                   value="Cache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache"/>
+                            <!-- Default caching -->
+                            <entry name="http.cache:default" value="Cache-Control: max-age=120"/>
+                        </parameters>
+                    </command>
+                    <command pattern="GET|gephi/*" implementation="com.orientechnologies.orient.graph.server.command.OServerCommandGetGephi"/>
+                </commands>
+            </listener>
+            {%- endif %}
+        </listeners>
+        <cluster>
+        </cluster>
+    </network>
+    <storages>
+    </storages>
+    <users>
+    	{%- for user in server.users %}
+		<user resources="{{user.resources}}" password="{{user.password}}" name="{{user.name}}"/>
+    	{%- endfor %}
+    </users>
+    <properties>
+        <!-- DATABASE POOL: size min/max -->
+        <entry name="db.pool.min" value="{{server.db.pool.min}}"/>
+        <entry name="db.pool.max" value="{{server.db.pool.max}}"/>
+
+        <!-- PROFILER: configures the profiler as <seconds-for-snapshot>,<archive-snapshot-size>,<summary-size> -->
+        <entry name="profiler.enabled" value="{{server.profiler.enabled}}"/>
+        <!-- <entry name="profiler.config" value="30,10,10" /> -->
+
+        <!-- LOG: enable/Disable logging. Levels are: finer, fine, finest, info,
+            warning -->
+        {%- if server.log.console.enabled %}
+        <entry name="log.console.level" value="{{server.log.console.level}}"/>
+        {%- endif %}
+        {%- if server.log.file.enabled %}
+        <entry name="log.file.level" value="{{server.log.file.level}}"/>
+        {%- endif %}
+    </properties>
+</orient-server>
