@@ -10,29 +10,17 @@ orientdb_server_config:
   - mode: 644
   - template: jinja
 
-orientdb_server_script_server.sh:
+orientdb_server_script_server.sh_heap:
   file.replace:
   - name: {{environment.install_dir}}/bin/server.sh
   - pattern: 'MAXHEAP=[0-9a-zA-Z-]*'
   - repl: 'MAXHEAP=-Xmx{{environment.java_max_heap}}'
 
-orientdb_server_script_orientdb.sh_dir:
-  file.replace:
-  - name: {{environment.install_dir}}/bin/orientdb.sh
-  - pattern: 'ORIENTDB_DIR=[^\n]*'
-  - repl: 'ORIENTDB_DIR="{{environment.install_dir}}"'
-
-orientdb_server_script_orientdb.sh_user:
-  file.replace:
-  - name: {{environment.install_dir}}/bin/orientdb.sh
-  - pattern: 'ORIENTDB_USER=[^\n]*'
-  - repl: 'ORIENTDB_USER="{{environment.user}}"'
-
-orientdb_server_script_orientdb.sh_env:
+orientdb_server_script_server.sh_env:
   file.line:
-  - name: {{environment.install_dir}}/bin/orientdb.sh
+  - name: {{environment.install_dir}}/bin/server.sh
   - content: ". /etc/profile"
   - mode: ensure
-  - after: 'ORIENTDB_USER='
+  - before: 'echo'
 
 {%- endif %}

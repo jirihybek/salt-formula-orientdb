@@ -9,8 +9,8 @@ WantedBy=multi-user.target
 
 [Service]
 Type=forking
-ExecStart={{ environment.install_dir }}/bin/orientdb.sh start
-ExecStop={{ environment.install_dir }}/bin/orientdb.sh stop
-ExecStatus={{ environment.install_dir }}/bin/orientdb.sh status
+ExecStart={{ environment.install_dir }}/bin/server.sh
+User={{ environment.user }}
+Group={{ environment.group }}
 Restart=always
 RestartSec=10
